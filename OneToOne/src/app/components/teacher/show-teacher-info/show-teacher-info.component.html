@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Teacher Information</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container" style="padding-top: 5px;">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div style="color: deeppink; font-size:20px;"><strong>Teacher's Information</strong></div>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <div style="margin-bottom: 10px;">
+                                <div style="text-align: right;">
+                                    <a [routerLink]="'/teacherDetails'" class="btn btn-sm btn-primary" style="margin-right: 5px;">
+                                        <strong>+ </strong>Add Teacher</a>
+                                        <button class="btn  btn-sm btn-primary" type="button" (click)="refreshPage()">Refresh</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-4" style="padding-bottom: 10px;padding-top: 10px;"><b>Total Teacher:</b>
+                <span class="f-w-normal">{{ searchResult.totalElements }}</span>
+                <form class="d-flex margin-bottom " (keyup.enter)="getAllTeachers()">
+                    <input class="form-control me-2" type="search" placeholder="Search"
+                     aria-label="Search" name="search" [(ngModel)]="search.teacherName">
+                    <button class="btn btn-primary" type="button" (click)="getAllTeachers()">Search</button>
+                </form>
+            </div>
+        </div>
+      
+         <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                         <thead class="table-primary">
+                            <tr>
+                            <th 
+                                scope="col" 
+                                style="text-align: center;"
+                                (click)="sortByColName('id')"
+                                class="cursor-pointer-i"
+                              >
+                                Id
+                                <span
+                                  class="fa fa-sort"
+                                  *ngIf="search.sortCol !== 'id'"
+                                ></span>
+                                <span
+                                  class="fa fa-sort-up"
+                                  *ngIf="search.sortCol === 'id' && search.sortType == 'ASC'"
+                                ></span>
+                                <span
+                                  class="fa fa-sort-down"
+                                  *ngIf="search.sortCol === 'id' && search.sortType == 'DESC'"
+                                ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('name')"
+                            class="cursor-pointer-i"
+                          >
+                            Name
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'name'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'name' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'name' && search.sortType == 'DESC'"
+                            ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('email')"
+                            class="cursor-pointer-i"
+                          >
+                            Email
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'email'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'email' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'email' && search.sortType == 'DESC'"
+                            ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('phoneNo')"
+                            class="cursor-pointer-i"
+                          >
+                            Phone No
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'phoneNo'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'phoneNo' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'phoneNo' && search.sortType == 'DESC'"
+                            ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('address')"
+                            class="cursor-pointer-i"
+                          >
+                            Address
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'address'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'address' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'address' && search.sortType == 'DESC'"
+                            ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('courseId')"
+                            class="cursor-pointer-i"
+                          >
+                            Course Id
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'courseId'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'courseId' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'courseId' && search.sortType == 'DESC'"
+                            ></span>
+                            </th>
+                            <th scope="col"style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let teacher of teachers">
+                              <th scope="row"style="text-align: center;">{{teacher.id}}</th>
+                                 <td style="text-align: center;">{{teacher.name}}</td>
+                                 <td style="text-align: center;">{{teacher.email}}</td>
+                                 <td style="text-align: center;">{{teacher.phoneNo}}</td>
+                                 <td style="text-align: center;">{{teacher.address}}</td>
+                                 <td style="text-align: center;">{{teacher.courseId}}</td>
+                                 <td style="text-align: center;">
+                                    <a [routerLink]="'/teacherDetails/'+ teacher.id" 
+                                    [queryParams]="{ isUpdate: true}" 
+                                    class="btn btn-outline-success" 
+                                    data-toggle="tooltip"
+                                    title="Edit"
+                                    style="padding-right: 5px;">
+                                    <i class="fas fa-edit" style="padding-right: 5px;"></i> 
+                                    </a>
+                                    <a [routerLink]="'/teacherDetails/'+teacher.id" 
+                                    [queryParams]="{ 'isView': true}" 
+                                    class="btn btn-outline-warning"
+                                    data-toggle="tooltip"
+                                    title="View"
+                                    >
+                                    <i class="fas fa-eye"></i> 
+                                    </a>
+                                    <button type="button" 
+                                    class="btn  btn-outline-danger"
+                                    data-toggle="tooltip"
+                                    title="Delete" 
+                                    (click)="delete(teacher.id)" 
+                                    style="padding-right: 5px;">
+                                    <i class="fas fa-trash-alt" style="padding-right: 5px;"></i> 
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <!-- Pagination Start -->
+        <nav class="pagination-div" *ngIf="searchResult.totalPages >= 2">
+            <ul class="pagination justify-content-center">
+              <li class="page-item {{ searchResult.hasPrevious ? '' : 'disabled' }}">
+                <a
+                  class="page-link previous cursor-pointer"
+                  (click)="prevPage()"
+                  tabindex="-1"
+                  >Previous</a
+                >
+              </li>
+              <li
+                *ngFor="let page of searchResult.pages"
+                class="page-item {{
+                  page == searchResult.currentPage.toString() ? 'active' : ''
+                }} {{ page == '...' ? 'disabled' : '' }}"
+              >
+                <a class="page-link cursor-pointer" (click)="goPage(page)">{{
+                  page
+                }}</a>
+              </li>
+              <li class="page-item {{ searchResult.hasNext ? '' : 'disabled' }}">
+                <a
+                  aria-disabled="'false'"
+                  class="page-link next cursor-pointer"
+                  (click)="nextPage()"
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+          <!-- Pagination End -->
+    </div>
+    </div>
+</body>
+</html>
+
+
+
+   

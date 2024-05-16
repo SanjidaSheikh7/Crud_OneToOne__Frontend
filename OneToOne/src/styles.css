@@ -1,0 +1,53 @@
+/* You can add global styles to this file, and also import other style files */
+/* Pagination CSS START */
+
+.pagination {
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+}
+
+.page-link {
+    color: black !important;
+    font-size: 12px !important;
+}
+
+.disabled .page-link {
+    color: #495057 !important;
+}
+
+.active .page-link {
+    background-color: #D10D74 !important;
+    color: white !important;
+    border-color: #D10D74 !important;
+}
+
+.page-link.previous {
+    width: 75px;
+}
+
+.page-link.next {
+    width: 75px;
+}
+
+.justify-content-center {
+    vertical-align: middle;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.cursor-pointer-i {
+    cursor: pointer !important;
+}
+
+.cursor-default-i {
+    cursor: default !important;
+}
+
+/* Pagination CSS END */

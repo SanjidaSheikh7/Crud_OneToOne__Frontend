@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Panel Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container"style="padding-top: 5px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div style="color: deeppink; font-size:20px;"><strong>Course Information</strong></div>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div style="margin-bottom: 10px;">
+                            <div style="text-align: right;">
+                                <a [routerLink]="'/courseDetails'" class="btn btn-sm btn-primary"style="margin-right: 5px;">
+                                    <strong>+ </strong>Add Course</a>
+                                <button class="btn btn-sm btn-primary" type="button" (click)="refreshPage()">
+                                    Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-4" style="padding-bottom: 10px;padding-top: 10px;"><b>Total Course:</b>
+                    <span class="f-w-normal">{{ searchResult.totalElements }}</span>
+                    <form class="d-flex margin-bottom " (keyup.enter)="getAllCourses()">
+                        <input class="form-control me-2" type="text" placeholder="Search by Course Name" 
+                        aria-label="Search" name="search" [(ngModel)]="search.courseName" >
+                        <button class="btn btn-primary" type="button" (click)="getAllCourses()">Search</button>
+                    </form>
+                </div>
+         </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle">
+                         <thead class="table-primary">
+                            <tr>
+                                <th 
+                                scope="col" 
+                                style="text-align: center;"
+                                (click)="sortByColName('id')"
+                                class="cursor-pointer-i"
+                              >
+                                Id
+                                <span
+                                  class="fa fa-sort"
+                                  *ngIf="search.sortCol !== 'id'"
+                                ></span>
+                                <span
+                                  class="fa fa-sort-up"
+                                  *ngIf="search.sortCol === 'id' && search.sortType == 'ASC'"
+                                ></span>
+                                <span
+                                  class="fa fa-sort-down"
+                                  *ngIf="search.sortCol === 'id' && search.sortType == 'DESC'"
+                                ></span>
+                            </th>
+                            <th 
+                            scope="col" 
+                            style="text-align: center;"
+                            (click)="sortByColName('courseName')"
+                            class="cursor-pointer-i"
+                          >
+                            Course Name
+                            <span
+                              class="fa fa-sort"
+                              *ngIf="search.sortCol !== 'courseName'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-up"
+                              *ngIf="search.sortCol === 'courseName' && search.sortType == 'ASC'"
+                            ></span>
+                            <span
+                              class="fa fa-sort-down"
+                              *ngIf="search.sortCol === 'courseName' && search.sortType == 'DESC'"
+                            ></span>
+                        </th>
+                        <th 
+                        scope="col" 
+                        style="text-align: center;"
+                        (click)="sortByColName('courseCredit')"
+                        class="cursor-pointer-i"
+                      >
+                      Course Credit
+                        <span
+                          class="fa fa-sort"
+                          *ngIf="search.sortCol !== 'courseCredit'"
+                        ></span>
+                        <span
+                          class="fa fa-sort-up"
+                          *ngIf="search.sortCol === 'courseCredit' && search.sortType == 'ASC'"
+                        ></span>
+                        <span
+                          class="fa fa-sort-down"
+                          *ngIf="search.sortCol === 'courseCredit' && search.sortType == 'DESC'"
+                        ></span>
+                    </th>
+                                <th scope="col"style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let course of courses">
+                              <th scope="row"style="text-align: center;">{{course.id}}</th>
+                                 <td style="text-align: center;">{{course.courseName}}</td>
+                                 <td style="text-align: center;">{{course.courseCredit}}</td>
+                                 
+                                 <td style="text-align: center;">
+                                    <a 
+                                    class="btn btn-outline-success"
+                                    data-toggle="tooltip"
+                                    title="Edit"
+                                    [routerLink]="'/courseDetails/'+ course.id" 
+                                    [queryParams]="{ isUpdate: true}" 
+                                    >
+                                        <i class="fas fa-edit"></i> 
+                                    </a>
+                                    <a [routerLink]="'/courseDetails/'+course.id" 
+                                    [queryParams]="{ 'isView': true}" 
+                                    class="btn btn-outline-warning"
+                                    data-toggle="tooltip"
+                                    title="View">
+                                        <i class="fas fa-eye"></i> 
+                                    </a>
+                                    <button type="button" 
+                                    class="btn btn-outline-danger" 
+                                    data-toggle="tooltip"
+                                    title="Delete"
+                                    (click)="deleteCourse(course.id)">
+                                        <i class="fas fa-trash-alt"></i> 
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                 </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <!-- Pagination Start -->
+        <nav class="pagination-div" *ngIf="searchResult.totalPages >= 2">
+            <ul class="pagination justify-content-center">
+              <li class="page-item {{ searchResult.hasPrevious ? '' : 'disabled' }}">
+                <a
+                  class="page-link previous cursor-pointer"
+                  (click)="prevPage()"
+                  tabindex="-1"
+                  >Previous</a
+                >
+              </li>
+              <li
+                *ngFor="let page of searchResult.pages"
+                class="page-item {{
+                  page == searchResult.currentPage.toString() ? 'active' : ''
+                }} {{ page == '...' ? 'disabled' : '' }}"
+              >
+                <a class="page-link cursor-pointer" (click)="goPage(page)">{{
+                  page
+                }}</a>
+              </li>
+              <li class="page-item {{ searchResult.hasNext ? '' : 'disabled' }}">
+                <a
+                  aria-disabled="'false'"
+                  class="page-link next cursor-pointer"
+                  (click)="nextPage()"
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+          <!-- Pagination End -->
+        </div>
+    </div>
+   </body>
+</html>
+
+
+
+
+
